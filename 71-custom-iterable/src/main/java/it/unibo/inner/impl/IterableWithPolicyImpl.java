@@ -11,12 +11,10 @@ public class IterableWithPolicyImpl<T> implements IterableWithPolicy<T> {
 
     private List<T> larray;
 
-
     public IterableWithPolicyImpl(T[] array) {
         this.larray = new ArrayList<>(List.copyOf(larray));
     }
     
-
     @Override
     public Iterator iterator() {
         // TODO Auto-generated method stub
