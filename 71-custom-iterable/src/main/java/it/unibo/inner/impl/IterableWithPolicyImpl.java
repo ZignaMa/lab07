@@ -14,12 +14,18 @@ public class IterableWithPolicyImpl<T> implements IterableWithPolicy<T> {
     private List<T> larray;
     Predicate<T> predicate;
 
-    public IterableWithPolicyImpl(T[] array) {
-        this.larray = new ArrayList<>(Arrays.asList(array));
-    }
-
     public IterableWithPolicyImpl(T[] array, Predicate<T> predicate) {
         this.larray = new ArrayList<>(Arrays.asList(array));
+        this.predicate= predicate;
+    }
+
+    public IterableWithPolicyImpl(T[] array) {
+        this(array, new Predicate<>() {
+                        @Override
+                        public boolean test(T elem) {
+                            return true;
+                        }
+                    });
     }
     
     @Override
@@ -53,23 +59,29 @@ public class IterableWithPolicyImpl<T> implements IterableWithPolicy<T> {
 
         @Override
         public boolean hasNext() {
-            return currentIndex < larray.size();
+            while (currentIndex < larray.size()) {
+                T elem = larray.get(currentIndex);
+                if (predicate.test(elem)) {
+                    return true;
+                }
+                currentIndex++;
+            }
+            return false;
         }
 
         @Override
         public T next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException();
+            if (hasNext()) {
+                return larray.get(currentIndex++);
             }
-            return larray.get(currentIndex++);
+            throw new NoSuchElementException();
         }
         
     }
 
     @Override
     public void setIterationPolicy(Predicate<T> filter) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setIterationPolicy'");
+        this.predicate=filter;
     }
     
 }
