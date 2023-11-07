@@ -11,6 +11,13 @@ tramite una classe anonima.
 Si osservi `TestFunctionalLibrary` per trovare esempi di classi anonime che implementano function.
 Ci si prepari a rispondere alla seguente domanda al momento della correzione:
 > perché `identity()` è un metodo, e non una costante `public static`?
+-------------
+Il metodo `identity()` nella tua interfaccia `Function` è un metodo statico che restituisce un'istanza di `Function`. Questo metodo crea una nuova istanza di `Function` ogni volta che viene chiamato. Questo è utile se vuoi avere più istanze separate della funzione identità, o se vuoi evitare di condividere lo stato tra diverse parti del tuo codice.
+
+Se `identity()` fosse una costante `public static`, avrebbe un solo valore che sarebbe condiviso tra tutte le parti del tuo codice che lo usano. Questo potrebbe essere problematico se la tua funzione avesse uno stato interno che potrebbe essere modificato, ma nel caso della funzione identità, che è senza stato, non ci sarebbero differenze pratiche tra i due approcci.
+
+In generale, l'uso di metodi statici per creare nuove istanze di oggetti (spesso chiamati metodi factory) può offrire più flessibilità rispetto all'uso di costanti statiche, perché ti permette di cambiare l'implementazione del metodo in futuro senza cambiare il codice che lo chiama. Ad esempio, potresti decidere in seguito di voler limitare il numero di istanze della tua funzione identità che vengono create, e potresti farlo modificando il metodo `identity()` per restituire una singola istanza condivisa invece di creare sempre una nuova istanza. Se avessi usato una costante statica, non avresti questa opzione senza cambiare tutto il codice che usa la costante.
+------------
 
 ## Parte 2: sfruttare le classi anonime per costruire una libreria funzionale
 
